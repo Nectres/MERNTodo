@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import styles from '../styles/Home.module.css'
 import { FaPlus, FaAd, FaCheck } from 'react-icons/fa'
+import { post } from '../utils'
 
 export default function Index({ initialTodos }) {
   const [todos, setTodos] = useState(initialTodos)
@@ -11,13 +12,7 @@ export default function Index({ initialTodos }) {
   async function newTodo() {
     let todoItem = todoRef.current.value
     let newTodo = { content: todoItem, finished: false }
-    const resp = await fetch('/express/new', {
-      method: 'POST',
-      body: JSON.stringify(newTodo),
-      headers: {
-        'Content-type': 'application/json',
-      },
-    })
+    const resp = await post("/express/new", newTodo);
     console.log(resp)
     setTodos([...todos, newTodo])
     todoRef.current.value = ''
