@@ -1,3 +1,14 @@
 .btn {
-  @apply mx-2 p-3 border-black border-2 rounded-lg hover:bg-black hover:text-white transition-transform hover:scale-105 ease-linear;
+  @apply mx-2 p-3 bg-black border-black border-2 rounded-lg text-white transition-transform hover:scale-105 ease-linear;
+}
+
+.btn-green {
+  @apply bg-green-800;
+}
+
+.todo-list {
+  min-width: 24em;
+  color: white;
+  text-align: center;
+  background: linear-gradient(to right, #cc2b5e, #753a88);
 }

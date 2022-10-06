@@ -7,7 +7,8 @@ const nextConfig = {
       source: "/express/:path*",
       destination: "http://localhost:6040/:path*" 
     }
-  ]
+  ],
+  
 }
 
 module.exports = nextConfig

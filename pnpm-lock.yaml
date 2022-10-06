@@ -13,6 +13,7 @@ specifiers:
   react-icons: ^4.4.0
   tailwindcss: ^3.1.8
   typescript: ^4.8.4
+  webfontloader: ^1.6.28
 
 dependencies:
   express: 4.18.1
@@ -21,6 +22,7 @@ dependencies:
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-icons: 4.4.0_react@18.2.0
+  webfontloader: 1.6.28
 
 devDependencies:
   autoprefixer: 10.4.12_postcss@8.4.17
@@ -2563,6 +2565,10 @@ packages:
   /vary/1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
+    dev: false
+
+  /webfontloader/1.6.28:
+    resolution: {integrity: sha512-Egb0oFEga6f+nSgasH3E0M405Pzn6y3/9tOVanv/DLfa1YBIgcv90L18YyWnvXkRbIM17v5Kv6IT2N6g1x5tvQ==}
     dev: false
 
   /webidl-conversions/7.0.0:
