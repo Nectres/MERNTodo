@@ -23,10 +23,37 @@ export default function Index({ initialTodos }) {
     })
   })
 
+  const color = [
+    'orange',
+    'lightblue',
+    'coral',
+    'lightgreen',
+    'lightyellow',
+    'lightgray',
+  ]
+  const fontColor = [
+    'brown',
+    'darkblue',
+    'lightred',
+    'darkgreen',
+    'orange',
+    'black',
+  ]
+
+  function randomArrayIndex(arr) {
+    return Math.floor(Math.random() * arr.length)
+  }
+
   async function newTodo() {
+    const colorIndex = randomArrayIndex(color)
     let todoItem = todoRef.current.value
     console.log(username)
-    let newTodo = { content: todoItem, finished: false, username }
+    let newTodo = {
+      content: todoItem,
+      finished: false,
+      username,
+      colorIndex,
+    }
     const resp = await post('/express/new', newTodo)
     let id = await resp.text()
     newTodo._id = id
@@ -51,7 +78,7 @@ export default function Index({ initialTodos }) {
   }
 
   async function pruneList() {
-    await fetch('/express/prune')
+    await fetch(`/express/prune?username=${username}`)
     let newList = todos.filter((t) => !t.finished)
     setTodos(newList)
   }
@@ -66,10 +93,8 @@ export default function Index({ initialTodos }) {
     let user = usernameRef.current.value
     let pwd = passwordRef.current.value
     let resp = await fetch(`/express/login?username=${user}&password=${pwd}`)
-    if ((await resp.text()) == "ok")
-      username = usernameRef.current.value;
-    else
-      alert("Wrong credentials");
+    if ((await resp.text()) == 'ok') username = usernameRef.current.value
+    else alert('Wrong credentials')
     getTodos()
     setShowLogin(false)
   }
@@ -95,7 +120,7 @@ export default function Index({ initialTodos }) {
               />
             </label>
             <label>
-              Password: 
+              Password:
               <input
                 type="password"
                 ref={passwordRef}
@@ -129,33 +154,25 @@ export default function Index({ initialTodos }) {
       <p className="text-center text-sm text-gray-700">
         The best way to manage your day.
       </p>
-      <div className="flex items-center justify-center my-20 mx-20 h-full">
-        {todos.length > 0 ? (
-          <ul
-            className={`flex flex-col px-12 py-8 bg-red-100 rounded-lg ${styles['todo-list']}`}
+      <div className="flex gap-4 items-center justify-center my-20 mx-20 h-full">
+        {todos.map((todo, index) => (
+          <div
+            onClick={(_) => setFinished(index)}
+            style={{
+              backgroundColor: color[todo.colorIndex],
+              color: fontColor[todo.colorIndex],
+              fontWeight: 900,
+              opacity: todo.finished ? 40 : 100,
+            }}
+            className="px-4 py-2 rounded-lg hover:scale-110 cursor-pointer"
           >
-            {todos.map((t, index) => (
-              <div key={t._id} onClick={(_) => setFinished(index)}>
-                <li
-                  className={`hover:bg-black ${
-                    t.finished ? 'line-through' : ''
-                  } hover:text-white px-4 py-2 rounded-lg ease-linear transition-transform hover:scale-105 hover:cursor-pointer`}
-                >
-                  {t.content}
-                </li>
-                {index != todos.length - 1 ? (
-                  <hr className="h-0.5 my-4 border-none rounded-lg bg-white"></hr>
-                ) : (
-                  ''
-                )}
-              </div>
-            ))}
-          </ul>
-        ) : (
-          <div className="bg-gray-700 text-white rounded-lg px-12 py-3">
-            Your todo list is empty!
+            {todo.finished ? (
+              <s>{todo.content}</s>
+            ) : (
+              <span>{todo.content}</span>
+            )}
           </div>
-        )}
+        ))}
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}
@@ -190,7 +207,9 @@ export default function Index({ initialTodos }) {
 }
 
 Index.getInitialProps = async () => {
+  const resp = await fetch(`http://localhost:6040/todos?username=`)
+  const initialTodos = await resp.json()
   return {
-    initialTodos: [],
+    initialTodos,
   }
 }
